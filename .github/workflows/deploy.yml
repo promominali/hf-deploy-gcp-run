@@ -10,11 +10,12 @@ env:
   REGION: us-central1
   SERVICE_NAME: huggingface-small
   REPO: huggingface-repo
-  IMAGE: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/${{ env.SERVICE_NAME }}:latest
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    env:
+      IMAGE: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/${{ env.SERVICE_NAME }}:latest
 
     steps:
       # Checkout repo
