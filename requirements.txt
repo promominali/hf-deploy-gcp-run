@@ -1,0 +1,6 @@
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+transformers==4.46.2
+torch
+python-multipart==0.0.9   # if you plan to handle file uploads
+pydantic==2.9.2           # FastAPI already pulls this in, but pinning helps
