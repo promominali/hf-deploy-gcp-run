@@ -43,3 +43,29 @@ create-repo:
 		--repository-format=docker \
 		--location=$(REGION) \
 		--description="Docker repo for Hugging Face models"
+
+# Remove local Docker image for this service
+clean-image:
+	-docker rmi $(IMAGE)
+
+# Remove common local artifacts (virtualenv and __pycache__)
+clean-local:
+	-rm -rf .venv __pycache__ */__pycache__
+
+# Full local cleanup helper (does NOT touch GCP resources)
+clean: clean-image clean-local
+
+# Delete the Cloud Run service in GCP
+clean-service:
+	gcloud run services delete $(SERVICE_NAME) \
+		--region $(REGION) \
+		--quiet
+
+# Delete container image from Artifact Registry
+clean-remote-image:
+	gcloud artifacts docker images delete $(IMAGE) \
+		--quiet \
+		--delete-tags || true
+
+# Cleanup helper for remote GCP resources (service + image)
+clean-remote: clean-service clean-remote-image

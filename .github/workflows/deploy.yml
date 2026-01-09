@@ -1,9 +1,7 @@
 name: Deploy to Cloud Run
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 env:
   PROJECT_ID: fullstackpro-python
@@ -38,10 +36,6 @@ jobs:
           IMAGE="$REGION-docker.pkg.dev/$PROJECT_ID/$REPO/$SERVICE_NAME:latest"
           echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
           docker buildx build --platform linux/amd64 -t "$IMAGE" .
-
-      # Push image
-      - name: Push Docker image
-        run: |
           docker push "$IMAGE"
 
       # Deploy to Cloud Run
